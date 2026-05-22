@@ -177,7 +177,7 @@ function Questionnaire({ onComplete }) {
   // =========================
   // SUBMIT
   // =========================
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const unanswered = questions
       .filter((q) => !answers[q.id])
       .map((q) => q.id);
@@ -200,7 +200,31 @@ function Questionnaire({ onComplete }) {
 
     setSubmitted(true);
     setIsReviewMode(false);
-  };
+
+    // =========================
+  // 🔥 BACKEND CALL (ADDED ONLY)
+  // =========================
+  try {
+    const response = await fetch("http://localhost:5000/api/analyze-score", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name: userName,   // comes from props
+        score: finalScore
+      })
+    });
+
+    const data = await response.json();
+    console.log("Backend response:", data);
+
+  } catch (error) {
+    console.error("Backend error:", error);
+    alert("Could not connect to backend.");
+  }
+};
+  
 
   // =========================
   // EDIT MODE

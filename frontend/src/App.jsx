@@ -16,7 +16,10 @@ function App() {
 
       {/* STEP 2: QUESTIONNAIRE */}
       {userName && score === null && (
-        <Questionnaire onComplete={setScore} />
+        <Questionnaire
+          onComplete={setScore}
+          userName={userName}   // 👈 THIS IS THE FIX
+        />
       )}
 
       {/* STEP 3: ROADMAP */}
