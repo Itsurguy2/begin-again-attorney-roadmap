@@ -1,0 +1,204 @@
+/* Global font upgrade (professional UI feel) */
+body {
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================
+   BACKGROUND CONTAINER
+========================= */
+.welcome-container {
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* subtle enhancement (keeps image natural) */
+  filter: contrast(1.03) saturate(1.05);
+}
+
+/* =========================
+   OVERLAY (UX DEPTH LAYER)
+========================= */
+.overlay {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+
+  /* modern gradient overlay (preferred over flat dark) */
+  background: linear-gradient(
+    rgba(15, 23, 42, 0.55),
+    rgba(15, 23, 42, 0.75)
+  );
+
+  backdrop-filter: blur(5px);
+}
+
+/* =========================
+   MAIN TITLE (H1)
+========================= */
+.overlay h1 {
+  color: #f8fafc;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+
+  /* subtle depth for readability */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================
+   CARD BASE STYLING
+========================= */
+.welcome-card,
+.message-card {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  padding: 36px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 650px;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  text-align: left;
+}
+
+/* =========================
+   CARD HEADINGS (H2)
+========================= */
+.welcome-card h2,
+.message-card h2 {
+  color: #1e3a8a;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  margin-bottom: 12px;
+}
+
+/* =========================
+   PARAGRAPH TEXT
+========================= */
+.welcome-card p,
+.message-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #334155;
+  margin-bottom: 10px;
+}
+
+/* =========================
+   INPUT FIELD
+========================= */
+input {
+  padding: 14px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #0f172a;
+  outline: none;
+}
+
+/* Focus state (important UX clarity) */
+input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* =========================
+   BUTTON BASE STYLE
+========================= */
+button {
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s ease;
+
+  /* spacing fix (separates input from button) */
+  margin-top: 18px;
+}
+
+/* hover interaction */
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   BUTTON ROW (HOME + CONTINUE)
+========================= */
+.button-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+/* Home button (back action) */
+.home-btn {
+  flex: 1;
+  background: #ef4444;
+  color: white;
+}
+
+/* Continue button (primary action) */
+.continue-btn {
+  flex: 2;
+  background: #2563eb;
+  color: white;
+}
+
+/* =========================
+   LEGAL MESSAGE BOX
+========================= */
+.legal-message {
+  margin-top: 16px;
+  padding: 18px;
+  max-height: 260px;
+  overflow-y: auto;
+
+  text-align: left;
+  line-height: 1.8;
+  font-size: 14.5px;
+
+  color: #1f2937;
+
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+
+  /* more professional/legal feel */
+  font-family: "Georgia", serif;
+}
+
+/* =========================
+   MOBILE RESPONSIVENESS
+========================= */
+@media (max-width: 600px) {
+  .overlay h1 {
+    font-size: 1.4rem;
+  }
+
+  .welcome-card,
+  .message-card {
+    padding: 20px;
+  }
+
+  .button-row {
+    flex-direction: column;
+  }
+}
