@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import "./questionnaire.css";
 
-function Questionnaire({ onComplete }) {
+function Questionnaire({ onComplete, userName }) {
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -205,7 +205,9 @@ function Questionnaire({ onComplete }) {
   // 🔥 BACKEND CALL (ADDED ONLY)
   // =========================
   try {
-    const response = await fetch("http://localhost:5000/api/analyze-score", {
+    const response = await fetch(
+      "https://your-backend-name.onrender.com/api/analyze-score", 
+      {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
