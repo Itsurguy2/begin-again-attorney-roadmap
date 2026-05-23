@@ -17,9 +17,12 @@ function loadState() {
 
 function App() {
   const initial = loadState();
-  const [userName, setUserName] = useState(initial.userName ?? null);
-  const [score, setScore] = useState(initial.score ?? null);
-  const [result, setResult] = useState(initial.result ?? null);
+  // Only restore a session if the user actually finished an assessment.
+  // A half-finished session (name entered but no score) starts fresh at Welcome.
+  const hasCompletedSession = initial.score !== null && initial.score !== undefined;
+  const [userName, setUserName] = useState(hasCompletedSession ? initial.userName ?? null : null);
+  const [score, setScore]       = useState(hasCompletedSession ? initial.score   ?? null : null);
+  const [result, setResult]     = useState(hasCompletedSession ? initial.result  ?? null : null);
 
   // Persist on every change
   useEffect(() => {
