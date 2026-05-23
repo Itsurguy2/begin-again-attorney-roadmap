@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { api } from "../api";
+import { buildLocalRoadmap } from "../lib/roadmap";
 import "./roadmap.css";
 
 function Roadmap({ userName, score, result, onRestart }) {
   const [data, setData] = useState(result || null);
   const [loading, setLoading] = useState(!result);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     if (data) return;
@@ -17,8 +17,9 @@ function Roadmap({ userName, score, result, onRestart }) {
         if (!cancelled) setData(res);
       })
       .catch((err) => {
-        if (!cancelled)
-          setError(err?.message || "Could not load your roadmap.");
+        // Backend unreachable — render the same content locally.
+        console.warn("Roadmap fetch failed, using local fallback:", err);
+        if (!cancelled) setData(buildLocalRoadmap(score));
       })
       .finally(() => !cancelled && setLoading(false));
     return () => { cancelled = true; };
@@ -30,20 +31,6 @@ function Roadmap({ userName, score, result, onRestart }) {
         <div className="loading-state" role="status" aria-live="polite">
           <div className="spinner-lg" aria-hidden />
           <p>Building your roadmap…</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="roadmap-container">
-        <div className="error-state">
-          <h2>Something went wrong</h2>
-          <p>{error}</p>
-          <button className="btn-primary" onClick={onRestart}>
-            Start Over
-          </button>
         </div>
       </div>
     );

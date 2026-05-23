@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { api } from "../api";
+import { buildLocalRoadmap } from "../lib/roadmap";
 import "./questionnaire.css";
 
 const QUESTIONS = [
@@ -183,11 +184,11 @@ function Questionnaire({ userName, onComplete, onBack }) {
       });
       setResult(data);
     } catch (err) {
-      console.error("Backend error:", err);
-      setSubmitError(
-        err?.message ||
-          "We couldn't reach the server. Check your connection and try again."
-      );
+      // Backend unreachable — degrade gracefully. Compute the same result
+      // locally so the user still sees their score and roadmap.
+      console.warn("Backend unreachable, using local fallback:", err);
+      const local = buildLocalRoadmap(score);
+      setResult({ ...local, name: userName });
     } finally {
       setSubmitting(false);
     }
@@ -239,6 +240,13 @@ function Questionnaire({ userName, onComplete, onBack }) {
 
           <p className="result-message">{result.message}</p>
           {result.focus && <p className="result-focus">{result.focus}</p>}
+
+          {result.offline && (
+            <p className="offline-note" role="status">
+              ⚠ Couldn't reach the server, so this result wasn't saved to
+              your history. Your roadmap is still ready below.
+            </p>
+          )}
 
           <div className="button-row">
             <button className="btn-ghost" onClick={handleEdit}>

@@ -438,6 +438,18 @@
   margin-bottom: var(--space-5);
 }
 
+.offline-note {
+  margin: var(--space-4) auto 0;
+  max-width: 520px;
+  padding: 10px 14px;
+  background: rgba(245, 158, 11, 0.10);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #fde68a;
+  border-radius: 10px;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
 .result-card .button-row {
   display: flex;
   flex-direction: column;
