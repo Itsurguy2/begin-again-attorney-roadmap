@@ -1,204 +1,234 @@
-/* Global font upgrade (professional UI feel) */
-body {
-  font-family: "Inter", "Segoe UI", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* ============================================================
+   WELCOME PAGE — mobile-first
+   ============================================================ */
 
-/* =========================
-   BACKGROUND CONTAINER
-========================= */
 .welcome-container {
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-
-  /* subtle enhancement (keeps image natural) */
-  filter: contrast(1.03) saturate(1.05);
 }
 
-/* =========================
-   OVERLAY (UX DEPTH LAYER)
-========================= */
 .overlay {
-  height: 100%;
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 24px;
-  text-align: center;
-
-  /* modern gradient overlay (preferred over flat dark) */
-  background: linear-gradient(
-    rgba(15, 23, 42, 0.55),
-    rgba(15, 23, 42, 0.75)
-  );
-
-  backdrop-filter: blur(5px);
+  padding: calc(env(safe-area-inset-top) + var(--space-4)) var(--space-4)
+           calc(env(safe-area-inset-bottom) + var(--space-5)) var(--space-4);
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(56,189,248,0.18), transparent 60%),
+    linear-gradient(180deg, rgba(15,23,42,0.65), rgba(15,23,42,0.85));
+  backdrop-filter: blur(2px);
 }
 
-/* =========================
-   MAIN TITLE (H1)
-========================= */
-.overlay h1 {
-  color: #f8fafc;
-  font-size: 2.2rem;
+.brand {
+  width: 100%;
+  max-width: var(--container);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-weight: 700;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
-
-  /* subtle depth for readability */
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.5px;
+  color: var(--text);
+  margin-bottom: var(--space-6);
 }
+.brand-mark { font-size: 1.4rem; }
+.brand-name { font-size: var(--fs-lg); }
 
-/* =========================
-   CARD BASE STYLING
-========================= */
+/* ============================================================
+   CARDS
+   ============================================================ */
 .welcome-card,
 .message-card {
-  background: rgba(255, 255, 255, 0.95);
-  color: #0f172a;
-  padding: 36px;
-  border-radius: 16px;
   width: 100%;
-  max-width: 650px;
-
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  max-width: 640px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.97);
+  color: #0f172a;
+  padding: clamp(20px, 4vw, 36px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   text-align: left;
+  animation: cardIn 0.45s ease both;
 }
 
-/* =========================
-   CARD HEADINGS (H2)
-========================= */
-.welcome-card h2,
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: var(--fs-xs);
+  color: var(--accent-2);
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+
+.welcome-card h1,
 .message-card h2 {
   color: #1e3a8a;
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  margin-bottom: 12px;
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.01em;
 }
 
-/* =========================
-   PARAGRAPH TEXT
-========================= */
-.welcome-card p,
-.message-card p {
-  font-size: 1rem;
-  line-height: 1.7;
+.lead {
+  font-size: var(--fs-base);
   color: #334155;
-  margin-bottom: 10px;
+  margin-bottom: var(--space-5);
 }
 
-/* =========================
-   INPUT FIELD
-========================= */
-input {
-  padding: 14px;
+/* ============================================================
+   FORM FIELD
+   ============================================================ */
+.field-label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: var(--space-2);
+}
+
+.welcome-card input[type="text"] {
   width: 100%;
+  padding: 14px 16px;
   border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  margin-top: 16px;
-  font-size: 16px;
-  font-weight: 500;
+  border: 1.5px solid #cbd5e1;
+  background: #fff;
   color: #0f172a;
+  font-weight: 500;
   outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: var(--tap);
 }
 
-/* Focus state (important UX clarity) */
-input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+.welcome-card input[type="text"]:focus {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
-/* =========================
-   BUTTON BASE STYLE
-========================= */
-button {
-  padding: 12px;
+.welcome-card input[aria-invalid="true"] {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: var(--fs-sm);
+  margin-top: var(--space-2);
+  font-weight: 500;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary,
+.btn-secondary {
   width: 100%;
+  min-height: var(--tap);
+  padding: 14px 18px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 15px;
-  transition: all 0.2s ease;
-
-  /* spacing fix (separates input from button) */
-  margin-top: 18px;
+  font-weight: 600;
+  font-size: var(--fs-base);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  margin-top: var(--space-4);
 }
 
-/* hover interaction */
-button:hover {
+.btn-primary {
+  background: linear-gradient(180deg, #2563eb, #1d4ed8);
+  color: white;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
+}
+
+.btn-primary:hover:not(:disabled),
+.btn-primary:focus-visible {
   transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.45);
 }
 
-/* =========================
-   BUTTON ROW (HOME + CONTINUE)
-========================= */
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  background: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1.5px solid #cbd5e1;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  background: #e2e8f0;
+}
+
+/* ============================================================
+   TRUST ROW (benefits below CTA)
+   ============================================================ */
+.trust-row {
+  list-style: none;
+  margin-top: var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+  padding: 0;
+  font-size: var(--fs-sm);
+  color: #475569;
+}
+
+/* ============================================================
+   LEGAL MESSAGE
+   ============================================================ */
+.legal-message {
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  max-height: 320px;
+  overflow-y: auto;
+  text-align: left;
+  line-height: 1.75;
+  font-size: var(--fs-sm);
+  color: #1f2937;
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+  border-radius: var(--radius);
+  border: 1px solid #e2e8f0;
+  font-family: "Georgia", "Times New Roman", serif;
+  -webkit-overflow-scrolling: touch;
+}
+
+.legal-message p { margin-bottom: var(--space-3); }
+.legal-message p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   BUTTON ROW
+   ============================================================ */
 .button-row {
   display: flex;
-  gap: 12px;
-  margin-top: 18px;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  flex-direction: column;
 }
 
-/* Home button (back action) */
-.home-btn {
-  flex: 1;
-  background: #ef4444;
-  color: white;
-}
-
-/* Continue button (primary action) */
-.continue-btn {
-  flex: 2;
-  background: #2563eb;
-  color: white;
-}
-
-/* =========================
-   LEGAL MESSAGE BOX
-========================= */
-.legal-message {
-  margin-top: 16px;
-  padding: 18px;
-  max-height: 260px;
-  overflow-y: auto;
-
-  text-align: left;
-  line-height: 1.8;
-  font-size: 14.5px;
-
-  color: #1f2937;
-
-  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
-
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-
-  /* more professional/legal feel */
-  font-family: "Georgia", serif;
-}
-
-/* =========================
-   MOBILE RESPONSIVENESS
-========================= */
-@media (max-width: 600px) {
-  .overlay h1 {
-    font-size: 1.4rem;
-  }
-
-  .welcome-card,
-  .message-card {
-    padding: 20px;
-  }
-
-  .button-row {
-    flex-direction: column;
-  }
+@media (min-width: 480px) {
+  .button-row { flex-direction: row; }
+  .button-row .btn-secondary { flex: 1; }
+  .button-row .btn-primary   { flex: 2; }
 }

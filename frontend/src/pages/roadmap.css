@@ -1,97 +1,371 @@
+/* ============================================================
+   ROADMAP PAGE — mobile-first
+   ============================================================ */
+
 .roadmap-container {
-  background: #0f172a;
-  color: #f8fafc;
+  background:
+    radial-gradient(900px 500px at 0% -10%, rgba(56,189,248,0.10), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg-deep));
+  color: var(--text);
   min-height: 100vh;
-  padding: 40px;
-  font-family: "Inter", Arial, sans-serif;
+  min-height: 100dvh;
+  padding-bottom: calc(env(safe-area-inset-bottom) + var(--space-7));
 }
 
-/* HERO */
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.roadmap-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  padding-top: calc(env(safe-area-inset-top) + var(--space-3));
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-tag {
+  font-weight: 700;
+  font-size: var(--fs-base);
+  letter-spacing: 0.3px;
+}
+
+.restart-btn {
+  background: transparent;
+  border: 1.5px solid var(--border-strong);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 36px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.restart-btn:hover, .restart-btn:focus-visible {
+  background: rgba(255,255,255,0.06);
+  border-color: var(--accent);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
 .roadmap-hero {
+  max-width: var(--container);
+  margin: 0 auto;
   text-align: center;
-  margin-bottom: 40px;
+  padding: var(--space-7) var(--space-4) var(--space-5);
+}
+
+.level-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-4);
+  color: white;
 }
 
 .roadmap-hero h1 {
-  font-size: 2.2rem;
-  color: #38bdf8;
+  font-size: var(--fs-3xl);
+  color: var(--text);
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  margin-bottom: var(--space-3);
+  line-height: 1.15;
 }
 
-.roadmap-hero p {
-  color: #cbd5e1;
-  max-width: 700px;
-  margin: 10px auto;
-  font-size: 1rem;
+.greeting {
+  color: var(--text-muted);
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-5);
+}
+.greeting strong { color: var(--accent); }
+
+/* SCORE CARDS */
+.score-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  max-width: 720px;
+  margin: 0 auto var(--space-5);
 }
 
-/* SECTIONS */
+@media (min-width: 560px) {
+  .score-row { grid-template-columns: repeat(3, 1fr); }
+}
+
+.score-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.score-label {
+  display: block;
+  width: 100%;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+
+.score-value {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.score-out { color: var(--text-dim); font-size: var(--fs-sm); }
+
+.hero-message {
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 0 auto var(--space-3);
+  line-height: 1.65;
+}
+
+.hero-focus {
+  color: var(--gold);
+  font-weight: 600;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
 .roadmap-section {
-  background: #1e293b;
-  padding: 25px;
-  border-radius: 12px;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  max-width: var(--container);
+  margin: 0 auto var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: clamp(20px, 4vw, 32px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  margin-left: var(--space-4);
+  margin-right: var(--space-4);
+}
+
+@media (min-width: 1140px) {
+  .roadmap-section { margin-left: auto; margin-right: auto; }
 }
 
 .roadmap-section h2 {
-  color: #facc15;
-  margin-bottom: 10px;
+  color: var(--gold);
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.01em;
 }
 
-/* HIGHLIGHT BOX */
-.highlight {
-  border-left: 5px solid #38bdf8;
-}
+.roadmap-section p { color: var(--text-muted); }
 
-/* FINAL */
-.final {
-  border-left: 5px solid #22c55e;
-}
+.highlight { border-left: 4px solid var(--accent); }
+.final     { border-left: 4px solid var(--success); }
 
-/* CARD GRID */
-.card-grid {
+/* ============================================================
+   STEP LIST
+   ============================================================ */
+.step-list {
+  list-style: none;
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 15px;
-  margin-top: 15px;
+  gap: var(--space-3);
 }
 
-/* SCHOOL CARD */
-.school-card {
-  background: #334155;
-  padding: 15px;
-  border-radius: 10px;
-  text-decoration: none;
-  color: white;
-  transition: 0.2s ease;
+.step-item {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.2s ease, transform 0.15s ease;
 }
 
-.school-card:hover {
-  background: #475569;
+.step-item:hover {
+  border-color: rgba(56, 189, 248, 0.4);
   transform: translateY(-2px);
 }
 
-/* TIMELINE */
+.step-num {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent-deep));
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.step-body h3 {
+  font-size: var(--fs-base);
+  color: var(--text);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.step-body p { color: var(--text-muted); font-size: var(--fs-sm); line-height: 1.55; }
+
+/* ============================================================
+   SCHOOL CARDS
+   ============================================================ */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 560px) {
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 880px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.school-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-2);
+  padding: var(--space-4);
+  border-radius: var(--radius);
+  text-decoration: none !important;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  min-height: 140px;
+}
+
+.school-card:hover, .school-card:focus-visible {
+  background: var(--surface-3);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.school-card h3 {
+  font-size: var(--fs-base);
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.school-card p { color: var(--text-muted); font-size: var(--fs-sm); flex: 1; }
+
+.card-cta {
+  margin-top: var(--space-3);
+  font-size: var(--fs-sm);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ============================================================
+   LSAT TIERS
+   ============================================================ */
+.lsat-tiers {
+  list-style: none;
+  padding: 0;
+  margin-top: var(--space-3);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.lsat-tiers li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.tier {
+  display: inline-block;
+  min-width: 72px;
+  padding: 4px 10px;
+  text-align: center;
+  background: rgba(56,189,248,0.18);
+  color: var(--accent);
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+.tier-mid  { background: rgba(250,204,21,0.18); color: var(--gold); }
+.tier-high { background: rgba(34,197,94,0.18); color: var(--success); }
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
 .timeline {
   list-style: none;
-  padding-left: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
 }
 
 .timeline li {
-  padding: 10px;
-  border-left: 3px solid #38bdf8;
-  margin-bottom: 10px;
-  background: #334155;
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--accent);
+  background: rgba(255,255,255,0.03);
   border-radius: 6px;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+.timeline strong { color: var(--text); margin-right: 6px; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.roadmap-footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: var(--fs-xs);
+  padding: var(--space-5) var(--space-4) 0;
 }
 
-/* MOBILE */
-@media (max-width: 600px) {
-  .roadmap-container {
-    padding: 20px;
-  }
-
-  .roadmap-hero h1 {
-    font-size: 1.6rem;
-  }
+/* ============================================================
+   LOADING / ERROR
+   ============================================================ */
+.loading-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--space-5);
+  text-align: center;
+  gap: var(--space-3);
 }
+
+.spinner-lg {
+  width: 44px; height: 44px;
+  border: 4px solid rgba(56,189,248,0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.error-state h2 { color: var(--danger); font-size: var(--fs-xl); }
+.error-state p  { color: var(--text-muted); max-width: 440px; margin: 0 auto var(--space-4); }
+.error-state .btn-primary { max-width: 280px; }

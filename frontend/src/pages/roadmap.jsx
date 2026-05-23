@@ -1,155 +1,200 @@
+import { useEffect, useState } from "react";
+import { api } from "../api";
 import "./roadmap.css";
 
-function Roadmap({ userName, score }) {
+function Roadmap({ userName, score, result, onRestart }) {
+  const [data, setData] = useState(result || null);
+  const [loading, setLoading] = useState(!result);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (data) return;
+    let cancelled = false;
+    setLoading(true);
+    api
+      .roadmap(score)
+      .then((res) => {
+        if (!cancelled) setData(res);
+      })
+      .catch((err) => {
+        if (!cancelled)
+          setError(err?.message || "Could not load your roadmap.");
+      })
+      .finally(() => !cancelled && setLoading(false));
+    return () => { cancelled = true; };
+  }, [data, score]);
+
+  if (loading) {
+    return (
+      <div className="roadmap-container">
+        <div className="loading-state" role="status" aria-live="polite">
+          <div className="spinner-lg" aria-hidden />
+          <p>Building your roadmap…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="roadmap-container">
+        <div className="error-state">
+          <h2>Something went wrong</h2>
+          <p>{error}</p>
+          <button className="btn-primary" onClick={onRestart}>
+            Start Over
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const r = data || {};
+
   return (
     <div className="roadmap-container">
+      {/* TOP BAR */}
+      <header className="roadmap-topbar">
+        <span className="brand-tag">⚖️ Attorney Roadmap</span>
+        <button className="restart-btn" onClick={onRestart}>
+          Start Over
+        </button>
+      </header>
 
       {/* HERO */}
-      <div className="roadmap-hero">
-        <h1>⚖️ Fast-Track Attorney Roadmap</h1>
-
+      <section className="roadmap-hero">
+        <span
+          className="level-pill"
+          style={{ background: r.color || "var(--accent-2)" }}
+        >
+          {r.level || "Your Roadmap"}
+        </span>
+        <h1>Fast-Track Attorney Roadmap</h1>
         {userName && (
-          <p>
-            Welcome, <strong>{userName}</strong>
+          <p className="greeting">
+            Built for <strong>{userName}</strong>
           </p>
         )}
 
-        {score !== null && (
-          <p>Your Score: <strong>{score}</strong></p>
-        )}
-
-        <p>
-          A structured execution plan for working adults pursuing a legal career efficiently.
-        </p>
-      </div>
-
-      {/* CORE REALITY */}
-      <section className="roadmap-section">
-        <h2>🧠 Core Reality</h2>
-        <p>
-          Becoming an attorney requires four things: LSAT performance, strategic law school selection,
-          completion of a JD program, and passing the bar exam.
-        </p>
-      </section>
-
-      {/* STEP 1 */}
-      <section className="roadmap-section">
-        <h2>⚡ Step 1: Legal Direction</h2>
-        <p>
-          Focused paths include immigration law, public interest law, government law, and corporate law.
-        </p>
-      </section>
-
-      {/* STEP 2 */}
-      <section className="roadmap-section">
-        <h2>🎯 Step 2: Affordable Law Schools</h2>
-
-        <div className="card-grid">
-
-          <a className="school-card" href="https://www.law.cuny.edu" target="_blank" rel="noreferrer">
-            <h3>CUNY School of Law</h3>
-            <p>Low-cost, public interest focused, strong clinical training.</p>
-          </a>
-
-          <a className="school-card" href="https://www.law.udc.edu" target="_blank" rel="noreferrer">
-            <h3>UDC Law</h3>
-            <p>Hands-on courtroom training with extremely low tuition.</p>
-          </a>
-
-          <a className="school-card" href="https://law.und.edu" target="_blank" rel="noreferrer">
-            <h3>University of North Dakota Law</h3>
-            <p>Small classes and strong bar exam preparation support.</p>
-          </a>
-
+        <div className="score-row">
+          <div className="score-card">
+            <span className="score-label">Score</span>
+            <span className="score-value">{r.score ?? score}</span>
+            <span className="score-out">/ {r.max_score ?? 420}</span>
+          </div>
+          <div className="score-card">
+            <span className="score-label">Percent</span>
+            <span className="score-value">{r.percent ?? "—"}%</span>
+          </div>
+          <div className="score-card">
+            <span className="score-label">Timeline</span>
+            <span className="score-value">{r.timeline_months ?? "—"}</span>
+            <span className="score-out">months</span>
+          </div>
         </div>
+
+        {r.message && <p className="hero-message">{r.message}</p>}
+        {r.focus && <p className="hero-focus">→ {r.focus}</p>}
       </section>
 
-      {/* STEP 3 */}
-      <section className="roadmap-section">
-        <h2>⚡ Step 3: Accelerated JD Programs</h2>
+      {/* STEPS */}
+      {Array.isArray(r.steps) && r.steps.length > 0 && (
+        <section className="roadmap-section">
+          <h2>🧭 Your Plan</h2>
+          <ol className="step-list">
+            {r.steps.map((s, i) => (
+              <li key={s.id || i} className="step-item">
+                <span className="step-num">{i + 1}</span>
+                <div className="step-body">
+                  <h3>{s.title}</h3>
+                  <p>{s.detail}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
 
-        <div className="card-grid">
+      {/* AFFORDABLE SCHOOLS */}
+      <SchoolSection
+        title="🎯 Affordable Law Schools"
+        items={r.schools_affordable}
+      />
 
-          <a className="school-card" href="https://tourolaw.edu" target="_blank" rel="noreferrer">
-            <h3>Touro Law Center</h3>
-            <p>FlexTime JD designed for working professionals (hybrid learning).</p>
-          </a>
+      {/* ACCELERATED PROGRAMS */}
+      <SchoolSection
+        title="⚡ Accelerated JD Programs"
+        items={r.schools_accelerated}
+      />
 
-          <a className="school-card" href="https://www.albanylaw.edu" target="_blank" rel="noreferrer">
-            <h3>Albany Law School</h3>
-            <p>Flexible JD program with hybrid structure and policy focus.</p>
-          </a>
-
-          <a className="school-card" href="https://www.swlaw.edu" target="_blank" rel="noreferrer">
-            <h3>Southwestern Law School</h3>
-            <p>2-year SCALE accelerated JD program.</p>
-          </a>
-
-        </div>
-      </section>
-
-      {/* STEP 4 */}
-      <section className="roadmap-section">
-        <h2>🏆 High-Return Schools</h2>
-
-        <div className="card-grid">
-
-          {/* FIXED NYU LINK (CONFIRMED CORRECT) */}
-          <a
-            className="school-card"
-            href="https://www.law.nyu.edu/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <h3>NYU School of Law</h3>
-            <p>
-              Elite legal education with strong public interest funding and global opportunities.
-            </p>
-          </a>
-
-          <a
-            className="school-card"
-            href="https://www.fordham.edu/school-of-law/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <h3>Fordham Law School</h3>
-            <p>Strong NYC employment outcomes and litigation pipeline.</p>
-          </a>
-
-        </div>
-      </section>
+      {/* ELITE SCHOOLS */}
+      <SchoolSection
+        title="🏆 High-Return Schools"
+        items={r.schools_elite}
+      />
 
       {/* LSAT */}
       <section className="roadmap-section highlight">
-        <h2>🧠 LSAT Strategy (Most Important Lever)</h2>
+        <h2>🧠 LSAT Strategy</h2>
         <p>
-          155–160: strong admissions | 160–165: scholarships | 165+: major advantage.
+          The LSAT is your single largest admissions lever.
         </p>
+        <ul className="lsat-tiers">
+          <li><span className="tier">155–160</span> Strong admissions</li>
+          <li><span className="tier tier-mid">160–165</span> Scholarship range</li>
+          <li><span className="tier tier-high">165+</span> Major advantage</li>
+        </ul>
       </section>
 
       {/* TIMELINE */}
       <section className="roadmap-section">
         <h2>📅 Fast-Track Timeline</h2>
-
         <ul className="timeline">
           <li><strong>Months 1–3:</strong> LSAT fundamentals</li>
           <li><strong>Months 3–6:</strong> Practice exams</li>
           <li><strong>Months 6–12:</strong> Applications</li>
-          <li><strong>2–4 Years:</strong> Law school completion</li>
+          <li><strong>2–4 Years:</strong> Law school</li>
           <li><strong>After:</strong> Bar exam → licensure</li>
         </ul>
       </section>
 
-      {/* FINAL MESSAGE */}
+      {/* FINAL */}
       <section className="roadmap-section final">
-        <h2>🏁 Final Message</h2>
+        <h2>🏁 Final Word</h2>
         <p>
-          Success is about execution, not prestige — consistency, affordability, and discipline win.
+          Success is execution, not prestige — consistency, affordability, and
+          discipline win. The plan above is yours. Now do the work.
         </p>
       </section>
 
+      <footer className="roadmap-footer">
+        <p>Built for working adults · © {new Date().getFullYear()} Attorney Roadmap</p>
+      </footer>
     </div>
+  );
+}
+
+function SchoolSection({ title, items }) {
+  if (!items || items.length === 0) return null;
+  return (
+    <section className="roadmap-section">
+      <h2>{title}</h2>
+      <div className="card-grid">
+        {items.map((s, i) => (
+          <a
+            key={s.url || i}
+            className="school-card"
+            href={s.url}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <h3>{s.name}</h3>
+            <p>{s.blurb}</p>
+            <span className="card-cta">Visit site →</span>
+          </a>
+        ))}
+      </div>
+    </section>
   );
 }
 
