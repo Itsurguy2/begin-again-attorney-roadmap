@@ -63,7 +63,7 @@ function Welcome({ onStart }) {
               type="text"
               autoComplete="given-name"
               inputMode="text"
-              placeholder="e.g. Jose Rivera"
+              placeholder="e.g. Jose Medina"
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
